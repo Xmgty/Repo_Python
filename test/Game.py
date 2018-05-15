@@ -146,10 +146,7 @@ run = True
 spaceship = Spaceship()
 while run:
     screens.blit(background,background_rect)
-    pygame.display.update()
-    for event in pygame.event.get(): #Ивент для закрытия программы
-        if event.type == pygame.QUIT:
-            run = False
+
     y1 += 5
     y += 5
     screens.blit(background,(x,y))
