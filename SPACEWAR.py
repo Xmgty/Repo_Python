@@ -89,7 +89,7 @@ class Spaceship():
     self.centerx = 350
     self.centery = 300
 
-    self.speed = 5
+    self.speed = 10
 
     self.moveLeft, self.moveRight, self.moveUp, self.moveDown = False, False, False, False
 
@@ -120,19 +120,22 @@ class Meteor():
 
         self.curIMG = pygame.image.load("images/Enemy.png")
         self.curvIMG = pygame.image.load("images/Enemy.png")
+        self.curvaIMG = pygame.image.load("images/Enemy.png")
 
-        self.speed = 2
+        self.speed = 5
         ### Начальные координаты
         self.centerx = random.randint(100, 500)
-        self.centerx1 = random.randint(100,500)
-        self.centery = 5
+        self.centery = 0
 
 
         self.moveLeft, self.moveRight, self.moveUp, self.moveDown = False, False, False, False
+        self.moveLeft1, self.moveRight1, self.moveUp1, self.moveDown1 = False, False, False, False
+        self.moveLeft2, self.moveRight2, self.moveUp2, self.moveDown2 = False, False, False, False
 
 
         self.rect = pygame.Rect(self.centerx - self.width / 2, self.centery - self.height / 2, self.width, self.height)
-        self.rect1 = pygame.Rect(self.centerx1 - self.width / 2, self.centery - self.height / 2, self.width, self.height)
+        self.rect1 = pygame.Rect(self.centerx - self.width / 2, self.centery - self.height / 2, self.width, self.height)
+        self.rect2 = pygame.Rect(self.centerx - self.width / 2, self.centery - self.height / 2, self.width, self.height)
     def update(self):
         if self.moveLeft and self.rect.left > 0:
             self.rect.centerx -= self.speed
@@ -145,19 +148,33 @@ class Meteor():
 
 
     def update1(self):
-        if self.moveLeft and self.rect.left > 0:
-            self.rect.centerx -= self.speed
-        if self.moveRight and self.rect1.right < screen3[0] - 1:
-            self.rect.centerx += self.speed
-        if self.moveUp and self.rect.top > 0:
-            self.rect.centery -= self.speed
-        if self.moveDown and self.rect.bottom < screen3[1] - 1:
-            self.rect.centery += self.speed
+        if self.moveLeft1 and self.rect1.left > 0:
+            self.rect1.centerx -= self.speed
+        if self.moveRight1 and self.rect1.right < screen3[0] - 1:
+            self.rect1.centerx += self.speed
+        if self.moveUp1 and self.rect1.top > 0:
+            self.rect1.centery -= self.speed
+        if self.moveDown1 and self.rect1.bottom < screen3[1] - 1:
+            self.rect1.centery += self.speed
+
+    def update2(self):
+        if self.moveLeft2 and self.rect2.left > 0:
+            self.rect2.centerx -= self.speed
+        if self.moveRight2 and self.rect2.right < screen3[0] - 1:
+            self.rect2.centerx += self.speed
+        if self.moveUp2 and self.rect2.top > 0:
+            self.rect2.centery -= self.speed
+        if self.moveDown2 and self.rect2.bottom < screen3[1] - 1:
+            self.rect2.centery += self.speed
 
     def render(self):
         window.blit(self.curIMG, self.rect)
     def render1(self):
         window.blit(self.curvIMG, self.rect1)
+
+    def render2(self):
+        window.blit(self.curvaIMG, self.rect2)
+
 
 
 
@@ -167,7 +184,7 @@ class Meteor():
 background = pygame.image.load('images/I5ram.png')
 background_size = background.get_size()
 background_rect = background.get_rect()
-screens = pygame.display.set_mode([800, 600])
+screens = pygame.display.set_mode([900, 600])
 
 clock=pygame.time.Clock()
 
@@ -208,6 +225,16 @@ pygame.mixer.music.play(0)
 run = True
 meteor = Meteor()
 spaceship = Spaceship()
+flag = 0
+qwer = 0
+qwer1 = 0
+qwer2 = 0
+sub2 = 0
+sub1 = 0
+sub = 0
+count = 0
+count1 = 0
+count2 = 0
 frames = 0
 while run:
     FPS = 36
@@ -226,19 +253,65 @@ while run:
     if y1 > h:
         y1 = -h
 
-######################### ДВИЖЕНИЕ МЕТЕОРИТОВ РАБОТАТЬ НАДО
-    movemet = random.randint(1, 1)
-    movecer = random.randint(3, 3)
-    if movemet == 1:
-        meteor.moveDown = True
+
+
+######################### ДВИЖЕНИЕ ENEMY РАБОТАТЬ НАДО
+
+    if count < 45:
+         meteor.moveDown = True
+         meteor.moveUp = False
+         count += 1
+    else:
+        meteor.moveDown = False
         meteor.moveUp = False
-    if movecer == 3:
+    if count1 < 155:
+         meteor.moveDown1 = True
+         meteor.moveUp1 = False
+         count1 += 1
+    else:
+        meteor.moveDown1 = False
+        meteor.moveUp1 = False
+    if qwer1 < 85:
+        meteor.moveRight1 = True
+        meteor.moveLeft1 = False
+        qwer1+=1
+        if qwer1 == 84:
+            sub1 = 0
+    elif sub1 < 85:
+        meteor.moveRight1 = False
+        meteor.moveLeft1 = True
+        sub1+=1
+        if sub1 == 84:
+            qwer1 = 0
+    if qwer < 125:
         meteor.moveRight = False
         meteor.moveLeft = True
-
-    if movecer == 4:
+        qwer+=1
+        if qwer == 124:
+            sub = 0
+    elif sub < 125:
         meteor.moveRight = True
         meteor.moveLeft = False
+        sub+=1
+        if sub == 124:
+            qwer = 0
+    if qwer2 < 185:
+        meteor.moveDown2 = False
+        meteor.moveUp2 = False
+        meteor.moveRight2 = True
+        meteor.moveLeft2 = False
+        qwer2 += 1
+        if qwer2 == 184:
+            sub2 = 0
+    elif sub2 < 185:
+        meteor.moveDown2 = False
+        meteor.moveUp2 = False
+        meteor.moveRight2 = False
+        meteor.moveLeft2 = True
+        sub2 += 1
+        if sub2 == 184:
+            qwer2 = 0
+
 
 
 #####################################
@@ -278,9 +351,12 @@ while run:
 
     meteor.update()
     meteor.render()
-    if frames > 36:
+    if frames > 128:
         meteor.update1()
         meteor.render1()
+    if frames > 256:
+        meteor.update2()
+        meteor.render2()
     spaceship.update()
     spaceship.render()
     pygame.display.update()
